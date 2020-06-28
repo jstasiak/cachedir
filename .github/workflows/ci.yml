@@ -1,0 +1,29 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        version: [stable, beta, nightly]
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v2
+    - name: Enable RUST_BACKTRACE
+      run: echo '::set-env name=RUST_BACKTRACE::1'
+    - uses: actions-rs/toolchain@v1
+      with:
+        toolchain: ${{ matrix.version }}
+        override: true
+        components: rustfmt
+    - name: Clean
+      run: cargo clean
+    - name: Build
+      run: cargo build --verbose
+    - name: Test
+      run: cargo test
+    - name: Enforce formatting
+      run: cargo fmt -- --check
