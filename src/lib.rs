@@ -224,7 +224,7 @@ fn ensure_tag_is_idempotent() {
 }
 
 #[test]
-fn one_and_only_one_mkdir_atomic_succeeds() {
+fn mkdir_atomic_works() {
     let directory = tempfile::tempdir().unwrap();
     let cache = directory.path().join("cache");
     let threads = (0..10).map(|_| {
@@ -233,6 +233,18 @@ fn one_and_only_one_mkdir_atomic_succeeds() {
     });
     let results = threads.map(|t| t.join().unwrap().unwrap());
     let creations: usize = results.map(|created| if created { 1 } else { 0 }).sum();
+    // One and only one actually creates the desired directory...
     assert_eq!(creations, 1);
+    // ...which is tagged correctly.
     assert!(is_tagged(cache).unwrap());
+
+    // The mkdir_atomic() calls which didn't actually create the final directory shouldn't leave
+    // behind any garbage.
+    assert_eq!(
+        fs::read_dir(directory.path())
+            .unwrap()
+            .map(|entry| entry.unwrap().file_name())
+            .collect::<Vec<_>>(),
+        ["cache"],
+    );
 }
