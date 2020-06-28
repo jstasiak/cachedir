@@ -227,11 +227,12 @@ fn ensure_tag_is_idempotent() {
 fn one_and_only_one_mkdir_atomic_succeeds() {
     let directory = tempfile::tempdir().unwrap();
     let cache = directory.path().join("cache");
-    let threads = (0..10).map(move |_| {
+    let threads = (0..10).map(|_| {
         let cache = cache.clone();
         thread::spawn(move || mkdir_atomic(cache))
     });
     let results = threads.map(|t| t.join().unwrap().unwrap());
     let creations: usize = results.map(|created| if created { 1 } else { 0 }).sum();
     assert_eq!(creations, 1);
+    assert!(is_tagged(cache).unwrap());
 }
