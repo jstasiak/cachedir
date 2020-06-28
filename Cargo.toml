@@ -1,0 +1,10 @@
+[package]
+name = "cdir"
+version = "0.2.0"
+authors = ["Jakub Stasiak <jakub@stasiak.at>"]
+edition = "2018"
+license = "MIT"
+description = "A library to help interacting with cache directories and CACHEDIR.TAG files."
+
+[dependencies]
+tempfile = "3"
