@@ -1,5 +1,5 @@
 [package]
-name = "cdir"
+name = "cachedir"
 version = "0.2.0"
 authors = ["Jakub Stasiak <jakub@stasiak.at>"]
 edition = "2018"
