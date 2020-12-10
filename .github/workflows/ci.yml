@@ -17,19 +17,20 @@ jobs:
         toolchain: ${{ matrix.version }}
         override: true
         components: rustfmt, llvm-tools-preview
-    # We need this cache, otherwise crgo install grcov takes ages (read: minutes)
+    # We need this cache, otherwise cargo install grcov takes ages (read: minutes)
     # which makes the CI take orders of magnituted longer than without it. Caching helps.
     # There are currently no nicer solutions to this, but using the cache action
     # to cache ~/.cargo/bin/ should be good enough.
     - name: Cache things installed with cargo
+      id: cache-cargo-bin
       uses: actions/cache@v1
       with:
-        path: |
-          ~/.cargo/bin/
-          ~/.cargo/registry
-          ~/.cargo/git
-        key: ${{ runner.os }}-cargo-bin
+        path: ~/.cargo/bin/
+        key: ${{ runner.os }}-cargo-bin-grcov
     - name: Install grcov
+      # If we do "cargo install grcov" while ~/.cargo/bin/grcov exists it'll cause an
+      # error so we need to protect against it.
+      if: steps.cache-cargo-bin.outputs.cache-hit != 'true'
       run: cargo install grcov
     - name: Clean
       run: cargo clean
