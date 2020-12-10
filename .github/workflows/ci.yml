@@ -19,12 +19,12 @@ jobs:
         components: rustfmt, llvm-tools-preview
     - name: Install grcov
       run: cargo install grcov
-    - name: Enable Rust coverage instrumentation
-      run: echo 'RUSTFLAGS="-Zinstrument-coverage"' >> $GITHUB_ENV
     - name: Clean
       run: cargo clean
     - name: Build
       run: cargo build --verbose
+      env:
+        RUSTFLAGS: -Zinstrument-coverage
     - name: Test
       run: cargo test
       env:
