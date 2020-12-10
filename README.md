@@ -1,4 +1,5 @@
 # cachedir
+[![crates.io](https://img.shields.io/crates/v/cachedir)](https://crates.io/crates/cachedir)
 [![CI](https://github.com/jstasiak/cdir/workflows/CI/badge.svg)](https://github.com/jstasiak/cdir/actions?query=workflow%3ACI+branch%3Amaster)
 
 A Rust library to help interacting with cache directories and CACHEDIR.TAG files as defined in
