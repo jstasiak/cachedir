@@ -33,7 +33,8 @@ jobs:
     - name: Test
       run: cargo test
       env:
-        LLVM_PROFILE_FILE: cachedir-%p-%m.profraw
+        # cargo test builds some things too so we need to add this flag here as well
+        RUSTFLAGS: -Zinstrument-coverage
     - name: Enforce formatting
       run: cargo fmt -- --check
     - name: Generate code coverage
