@@ -5,6 +5,10 @@ authors = ["Jakub Stasiak <jakub@stasiak.at>"]
 edition = "2018"
 license = "MIT"
 description = "A library to help interacting with cache directories and CACHEDIR.TAG files."
+repository = "https://github.com/jstasiak/cachedir"
+
+[badges]
+travis-ci = { repository = "jstasiak/cachedir" }
 
 [dependencies]
 tempfile = "3"
