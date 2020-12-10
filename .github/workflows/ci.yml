@@ -17,6 +17,11 @@ jobs:
         toolchain: ${{ matrix.version }}
         override: true
         components: rustfmt, llvm-tools-preview
+    - name: Cache cargo plugins
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/bin/
+        key: ${{ runner.os }}-cargo-bin
     - name: Install grcov
       run: cargo install grcov
     - name: Clean
