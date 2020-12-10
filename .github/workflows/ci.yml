@@ -16,9 +16,7 @@ jobs:
       with:
         toolchain: ${{ matrix.version }}
         override: true
-        components:
-          - rustfmt
-          - llvm-tools-preview
+        components: rustfmt, llvm-tools-preview
     - name: Install grcov
       run: cargo install grcov
     - name: Enable Rust coverage instrumentation
@@ -29,7 +27,8 @@ jobs:
       run: cargo build --verbose
     - name: Test
       run: cargo test
-      env: 'LLVM_PROFILE_FILE="cachedir-%p-%m.profraw"'
+      env:
+        LLVM_PROFILE_FILE: cachedir-%p-%m.profraw
     - name: Enforce formatting
       run: cargo fmt -- --check
     - name: Report code coverage
