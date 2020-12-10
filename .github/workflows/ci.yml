@@ -29,7 +29,7 @@ jobs:
       run: cargo build --verbose
     - name: Test
       run: cargo test
-      env: LLVM_PROFILE_FILE="cachedir-%p-%m.profraw"
+      env: 'LLVM_PROFILE_FILE="cachedir-%p-%m.profraw"'
     - name: Enforce formatting
       run: cargo fmt -- --check
     - name: Report code coverage
