@@ -24,7 +24,10 @@ jobs:
     - name: Cache things installed with cargo
       uses: actions/cache@v1
       with:
-        path: ~/.cargo/bin/
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry
+          ~/.cargo/git
         key: ${{ runner.os }}-cargo-bin
     - name: Install grcov
       run: cargo install grcov
