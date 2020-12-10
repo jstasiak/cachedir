@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        version: [stable, beta, nightly]
+        version: [nightly]
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
@@ -16,12 +16,37 @@ jobs:
       with:
         toolchain: ${{ matrix.version }}
         override: true
-        components: rustfmt
+        components: rustfmt, llvm-tools-preview
+    # We need this cache, otherwise cargo install grcov takes ages (read: minutes)
+    # which makes the CI take orders of magnituted longer than without it. Caching helps.
+    # There are currently no nicer solutions to this, but using the cache action
+    # to cache ~/.cargo/bin/ should be good enough.
+    - name: Cache things installed with cargo
+      id: cache-cargo-bin
+      uses: actions/cache@v1
+      with:
+        path: ~/.cargo/bin/
+        key: ${{ runner.os }}-cargo-bin-grcov
+    - name: Install grcov
+      # If we do "cargo install grcov" while ~/.cargo/bin/grcov exists it'll cause an
+      # error so we need to protect against it.
+      if: steps.cache-cargo-bin.outputs.cache-hit != 'true'
+      run: cargo install grcov
     - name: Clean
       run: cargo clean
     - name: Build
       run: cargo build --verbose
+      env:
+        RUSTFLAGS: -Zinstrument-coverage
     - name: Test
       run: cargo test
+      env:
+        # cargo test builds some things too so we need to add this flag here as well
+        RUSTFLAGS: -Zinstrument-coverage
     - name: Enforce formatting
       run: cargo fmt -- --check
+    - name: Generate code coverage
+      run: grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+    - uses: codecov/codecov-action@v1
+      with:
+        verbose: true
