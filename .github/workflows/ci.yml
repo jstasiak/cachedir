@@ -17,14 +17,20 @@ jobs:
         toolchain: ${{ matrix.version }}
         override: true
         components: rustfmt, llvm-tools-preview
-    # Using this instead of plain cargo install for a great speedup.
-    # Downsides: it's experumental and has some security implications. Well,
-    # this is an open source project without any secret keys in the CI pipeline
-    # so it should be fine.
-    - uses: actions-rs/install@v0.1
+    # We need this cache, otherwise crgo install grcov takes ages (read: minutes)
+    # which makes the CI take orders of magnituted longer than without it. Caching helps.
+    # There are currently no nicer solutions to this, but using the cache action
+    # to cache ~/.cargo/bin/ should be good enough.
+    - name: Cache things installed with cargo
+      uses: actions/cache@v1
       with:
-        crate: grcov
-        use-tool-cache: true
+        path: |
+          ~/.cargo/bin/
+          ~/.cargo/registry
+          ~/.cargo/git
+        key: ${{ runner.os }}-cargo-bin
+    - name: Install grcov
+      run: cargo install grcov
     - name: Clean
       run: cargo clean
     - name: Build
