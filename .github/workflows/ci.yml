@@ -8,7 +8,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        version: [stable, beta, nightly]
+        version: [nightly]
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
@@ -16,12 +16,23 @@ jobs:
       with:
         toolchain: ${{ matrix.version }}
         override: true
-        components: rustfmt
+        components:
+          - rustfmt
+          - llvm-tools-preview
+    - name: Install grcov
+      run: cargo install grcov
+    - name: Enable Rust coverage instrumentation
+      run: echo 'RUSTFLAGS="-Zinstrument-coverage"' >> $GITHUB_ENV
     - name: Clean
       run: cargo clean
     - name: Build
       run: cargo build --verbose
     - name: Test
       run: cargo test
+      env: LLVM_PROFILE_FILE="cachedir-%p-%m.profraw"
     - name: Enforce formatting
       run: cargo fmt -- --check
+    - name: Report code coverage
+      run: |
+        grcov --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+        bash <(curl -s https://codecov.io/bash) -f lcov.info
