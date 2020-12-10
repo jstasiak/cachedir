@@ -12,8 +12,6 @@ jobs:
       fail-fast: false
     steps:
     - uses: actions/checkout@v2
-    - name: Enable RUST_BACKTRACE
-      run: echo '::set-env name=RUST_BACKTRACE::1'
     - uses: actions-rs/toolchain@v1
       with:
         toolchain: ${{ matrix.version }}
