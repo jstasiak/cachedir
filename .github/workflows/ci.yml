@@ -38,7 +38,8 @@ jobs:
         LLVM_PROFILE_FILE: cachedir-%p-%m.profraw
     - name: Enforce formatting
       run: cargo fmt -- --check
-    - name: Report code coverage
-      run: |
-        grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
-        bash <(curl -s https://codecov.io/bash) -f lcov.info
+    - name: Generate code coverage
+      run: grcov . --binary-path ./target/debug/ -s . -t lcov --branch --ignore-not-existing --ignore "/*" -o lcov.info
+    - uses: codecov/codecov-action@v1
+      with:
+        verbose: true
