@@ -17,7 +17,7 @@ jobs:
         toolchain: ${{ matrix.version }}
         override: true
         components: rustfmt, llvm-tools-preview
-    - name: Cache cargo plugins
+    - name: Cache things installed with cargo
       uses: actions/cache@v1
       with:
         path: ~/.cargo/bin/
