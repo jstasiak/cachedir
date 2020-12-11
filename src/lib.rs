@@ -124,7 +124,7 @@ pub fn ensure_tag<P: AsRef<path::Path>>(directory: P) -> io::Result<()> {
 /// name. Then the `CACHEDIR.TAG` file is created in the temporary directory and the temporary
 /// directory is attempted to be renamed to `directory`. This (as opposed to creating the directory
 /// with the final name and creating `CACHEDIR.TAG` file in it) is a way to ensure that the
-/// `directory` is always creatd with the `CACHEDIR.TAG` file. If we simply created the directory
+/// `directory` is always created with the `CACHEDIR.TAG` file. If we simply created the directory
 /// with the final name the program could be interrupted before `CACHEDIR.TAG` creation and the
 /// `directory` would remain not excluded from backups as this function does not attempt to verify
 /// or change the `CACHEDIR.TAG` file in `directory` if it already exists.
