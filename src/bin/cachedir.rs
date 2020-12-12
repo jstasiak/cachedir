@@ -52,7 +52,7 @@ fn help_text<T: AsRef<str>>(binary: T) -> String {
 {} --help               Print this help message
 {} is-tagged DIRECTORY  Check if the directory is tagged or not
 
-Application version: 0.2.0
+Application version: 0.3.0
 ",
         binary, binary,
     )
