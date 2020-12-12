@@ -12,7 +12,7 @@
 //! > they create, for easy identification by backup systems and other data management utilities.
 //! > Data management utilities can then heed or ignore these tags as the user sees fit.
 use std::io::prelude::*;
-use std::{env, fs, io, path, thread};
+use std::{env, fs, io, path};
 use tempfile;
 
 /// The `CACHEDIR.TAG` file header as defined by the specification.
