@@ -225,6 +225,7 @@ fn ensure_tag_is_idempotent() {
 
 #[test]
 fn mkdir_atomic_works() {
+    use std::thread;
     let directory = tempfile::tempdir().unwrap();
     let cache = directory.path().join("cache");
     let threads = (0..10).map(|_| {
