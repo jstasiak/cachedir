@@ -19,6 +19,7 @@ use tempfile;
 pub const HEADER: &'static [u8; 43] = b"Signature: 8a477f597d28d172789f06886806bc55";
 
 /// Returns `true` if the tag is present at `directory`, `false` otherwise.
+///
 /// This is basically a shortcut for
 ///
 /// ```ignore
