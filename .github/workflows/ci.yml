@@ -37,12 +37,12 @@ jobs:
     - name: Build
       run: cargo build --verbose
       env:
-        RUSTFLAGS: -Zinstrument-coverage
+        RUSTFLAGS: -Cinstrument-coverage
     - name: Test
       run: cargo test
       env:
         # cargo test builds some things too so we need to add this flag here as well
-        RUSTFLAGS: -Zinstrument-coverage
+        RUSTFLAGS: -Cinstrument-coverage
         LLVM_PROFILE_FILE: cachedir-%p-%m.profraw
     - name: Enforce formatting
       run: cargo fmt -- --check
