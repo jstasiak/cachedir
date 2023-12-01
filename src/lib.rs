@@ -13,7 +13,6 @@
 //! > Data management utilities can then heed or ignore these tags as the user sees fit.
 use std::io::prelude::*;
 use std::{env, fs, io, path};
-use tempfile;
 
 /// The `CACHEDIR.TAG` file header as defined by the specification.
 pub const HEADER: &'static [u8; 43] = b"Signature: 8a477f597d28d172789f06886806bc55";

@@ -1,4 +1,3 @@
-use cachedir;
 use std::env::args;
 use std::process::exit;
 
