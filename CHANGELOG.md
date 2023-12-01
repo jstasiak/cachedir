@@ -6,5 +6,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## [0.3.1] – 2023-12-01
+
 - Fix documentation of is_tagged
 - Add the missing LICENSE file
