@@ -24,21 +24,18 @@ where
         [] => (1, Some(help_text(&app))),
         ["--help"] => (0, Some(help_text(&app))),
         ["--version"] => (0, Some(help_text(&app))),
-        [command, directory] => match *command {
-            "is-tagged" => match cachedir::is_tagged(directory) {
-                Err(e) => (2, Some(e.to_string())),
-                Ok(is_tagged) => match is_tagged {
-                    true => (
-                        0,
-                        Some(format!("{} is tagged with CACHEDIR.TAG", directory)),
-                    ),
-                    false => (
-                        1,
-                        Some(format!("{} is not tagged with CACHEDIR.TAG", directory)),
-                    ),
-                },
+        ["is-tagged", directory] => match cachedir::is_tagged(directory) {
+            Err(e) => (2, Some(e.to_string())),
+            Ok(is_tagged) => match is_tagged {
+                true => (
+                    0,
+                    Some(format!("{} is tagged with CACHEDIR.TAG", directory)),
+                ),
+                false => (
+                    1,
+                    Some(format!("{} is not tagged with CACHEDIR.TAG", directory)),
+                ),
             },
-            _ => (1, Some(help_text(&app))),
         },
         _ => (1, Some(help_text(&app))),
     }
