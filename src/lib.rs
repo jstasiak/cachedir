@@ -15,7 +15,7 @@ use std::io::prelude::*;
 use std::{env, fs, io, path};
 
 /// The `CACHEDIR.TAG` file header as defined by the specification.
-pub const HEADER: &'static [u8; 43] = b"Signature: 8a477f597d28d172789f06886806bc55";
+pub const HEADER: &[u8; 43] = b"Signature: 8a477f597d28d172789f06886806bc55";
 
 /// Returns `true` if the tag is present at `directory`, `false` otherwise.
 ///
@@ -30,10 +30,7 @@ pub const HEADER: &'static [u8; 43] = b"Signature: 8a477f597d28d172789f06886806b
 ///
 /// See [get_tag_state](fn.get_tag_state.html) for error conditions documentation.
 pub fn is_tagged<P: AsRef<path::Path>>(directory: P) -> io::Result<bool> {
-    get_tag_state(directory).map(|state| match state {
-        TagState::Present => true,
-        _ => false,
-    })
+    get_tag_state(directory).map(|state| matches!(state, TagState::Present))
 }
 
 /// Gets the state of the tag in the specified directory.
@@ -48,7 +45,7 @@ pub fn get_tag_state<P: AsRef<path::Path>>(directory: P) -> io::Result<TagState>
         Ok(mut cachedir_tag) => {
             let mut buffer = vec![0; HEADER.len()];
             let read = cachedir_tag.read(&mut buffer)?;
-            let header_ok = read == HEADER.len() && buffer == &HEADER[..];
+            let header_ok = read == HEADER.len() && buffer == HEADER[..];
             Ok(if header_ok {
                 TagState::Present
             } else {
